@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Life-Util</string>
+    <string name="setting_en">SETTING</string>
+    <string name="lunch_list_en">LUNCH LIST</string>
+    <string name="add_lunch_en">ADD LUNCH</string>
+
+    <string name="lunch">점심</string>
+    <string name="cash">결제</string>
+    <string name="history">히스토리</string>
+    <string name="setting">세팅</string>
+
+    <string name="lunch_setting">점심 메뉴 세팅</string>
+    <string name="cash_setting">점심 결제 세팅</string>
+
+    <string name="restaurant_name">식당명</string>
+    <string name="preference">선호도</string>
+    <string name="low">낮음</string>
+    <string name="middle">중간</string>
+    <string name="high">높음</string>
+
+    <string name="plus">+</string>
+    <string name="ok_en">OK</string>
+    <string name="cancel_en">CANCEL</string>
+</resources>
