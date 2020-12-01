@@ -1,17 +1,16 @@
 package com.friendship41.life_util
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.friendship41.life_util.common.getFile
 import com.friendship41.life_util.common.getFileNameSet
 import com.friendship41.life_util.common.log
 import com.friendship41.life_util.common.saveFile
 import com.jayway.jsonpath.JsonPath
 import kotlinx.android.synthetic.main.activity_lunch_list.*
-import java.io.File
 
 const val ROOM_NAME = "room_temp"
 
@@ -36,17 +35,34 @@ class LunchListActivity : AppCompatActivity() {
         }
         val lunchMap = JsonPath.parse(getFile(this.applicationContext, ROOM_NAME)).json<HashMap<String, Any>>()
 
-        lv_lunch_list.adapter = ArrayAdapter(
+        val adaptedList = lunchMap.map { it.key }.toMutableList()
+        val adapter = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
-            lunchMap.map { it.key }.toTypedArray())
+            adaptedList)
+        lv_lunch_list.adapter = adapter
 
         lv_lunch_list.setOnItemClickListener { adapterView, _, position, _ ->
             log().info(lunchMap[adapterView.getItemAtPosition(position)].toString())
         }
 
-//        lv_lunch_list.setOnItemLongClickListener { adapterView, view, position, id ->
-//            AlertDialog.B
-//        }
+        lv_lunch_list.setOnItemLongClickListener { adapterView, _, position, _ ->
+            val selectedRestaurantName = adapterView.getItemAtPosition(position) as String
+            AlertDialog.Builder(this)
+                .setTitle(selectedRestaurantName)
+                .setMessage("정말 삭제하시겠습니까?")
+                .setPositiveButton("네") { _, _ ->
+                    lunchMap.remove(selectedRestaurantName)
+                    saveFile(this.applicationContext, ROOM_NAME, JsonPath.parse(lunchMap).jsonString())
+                    adaptedList.removeAt(position)
+                    adapter.notifyDataSetChanged()
+                }
+                .setNegativeButton("아니오") { _, _ ->
+                    log().info("아니오 클릭")
+                }
+                .show()
+
+            false
+        }
     }
 }
