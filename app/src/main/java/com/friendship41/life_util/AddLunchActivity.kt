@@ -57,7 +57,8 @@ class AddLunchActivity : AppCompatActivity() {
         }
         roomMap[restaurantName] = mapOf(
             Pair("checkedPreference", checkedPreference),
-            Pair("count", 0)
+            Pair("count", 0),
+            Pair("history", HashMap<Any, Any>())
         )
         saveFile(context, "room_$roomName", JsonPath.parse(roomMap).jsonString())
         log().info(JsonPath.parse(roomMap).jsonString())
