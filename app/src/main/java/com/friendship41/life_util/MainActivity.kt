@@ -3,15 +3,14 @@ package com.friendship41.life_util
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.friendship41.life_util.common.getFile
-import com.friendship41.life_util.common.getFileNameSet
-import com.friendship41.life_util.common.log
-import com.friendship41.life_util.common.saveFile
-import com.friendship41.life_util.data.Restaurant
+import com.friendship41.life_util.common.*
+import com.friendship41.life_util.service.EmptyRestaurantMapException
 import com.friendship41.life_util.service.getRandomRestaurant
-import com.jayway.jsonpath.JsonPath
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,11 +32,18 @@ class MainActivity : AppCompatActivity() {
         if (!getFileNameSet(this.applicationContext).contains(ROOM_NAME)) {
             saveFile(this.applicationContext, ROOM_NAME, "{}")
         }
-        val restaurantMap = JsonPath.parse(getFile(this.applicationContext, ROOM_NAME)).json<HashMap<String, Restaurant>>()
+        val restaurantMap = getRestaurantMapFromFile(this.applicationContext, ROOM_NAME)
+        log().info("점심 리스트 >> ${Json.encodeToString(restaurantMap)}")
 
         btn_random_lunch_go.setOnClickListener {
-            val selectedRandomRestaurant = getRandomRestaurant(restaurantMap)
-            tv_random_restaurant_name.setText(selectedRandomRestaurant.name, TextView.BufferType.NORMAL)
+            try {
+                val selectedRandomRestaurant = getRandomRestaurant(restaurantMap)
+                tv_random_restaurant_name.setText(selectedRandomRestaurant.name, TextView.BufferType.NORMAL)
+            } catch (e: EmptyRestaurantMapException) {
+                log().info("등록된 식당이 없음...")
+                Toast.makeText(this.applicationContext, e.message, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
         }
 
     }

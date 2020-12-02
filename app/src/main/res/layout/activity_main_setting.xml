@@ -61,9 +61,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/lunch"
-                android:id="@+id/tv_main_bottom_lunch"
                 android:textSize="30sp"
-                tools:ignore="NestedWeights"/>
+                tools:ignore="NestedWeights"
+                android:id="@+id/tv_main_bottom_lunch"/>
         <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

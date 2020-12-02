@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.friendship41.life_util.common.getFile
 import com.friendship41.life_util.common.getFileNameSet
+import com.friendship41.life_util.common.getRestaurantMapFromFile
 import com.friendship41.life_util.common.log
 import com.friendship41.life_util.common.saveFile
-import com.jayway.jsonpath.JsonPath
 import kotlinx.android.synthetic.main.activity_lunch_list.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 const val ROOM_NAME = "room_temp"
 
@@ -33,7 +34,8 @@ class LunchListActivity : AppCompatActivity() {
         if (!getFileNameSet(this.applicationContext).contains(ROOM_NAME)) {
             saveFile(this.applicationContext, ROOM_NAME, "{}")
         }
-        val lunchMap = JsonPath.parse(getFile(this.applicationContext, ROOM_NAME)).json<HashMap<String, Any>>()
+
+        val lunchMap = getRestaurantMapFromFile(this.applicationContext, ROOM_NAME)
 
         val adaptedList = lunchMap.map { it.key }.toMutableList()
         val adapter = ArrayAdapter(
@@ -53,9 +55,10 @@ class LunchListActivity : AppCompatActivity() {
                 .setMessage("정말 삭제하시겠습니까?")
                 .setPositiveButton("네") { _, _ ->
                     lunchMap.remove(selectedRestaurantName)
-                    saveFile(this.applicationContext, ROOM_NAME, JsonPath.parse(lunchMap).jsonString())
+                    saveFile(this.applicationContext, ROOM_NAME, Json.encodeToString(lunchMap))
                     adaptedList.removeAt(position)
                     adapter.notifyDataSetChanged()
+                    log().info("after delete >> ${Json.encodeToString(lunchMap)}")
                 }
                 .setNegativeButton("아니오") { _, _ ->
                     log().info("아니오 클릭")

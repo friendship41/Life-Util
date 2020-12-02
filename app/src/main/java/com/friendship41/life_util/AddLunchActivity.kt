@@ -9,8 +9,10 @@ import com.friendship41.life_util.common.getRoomFileMap
 import com.friendship41.life_util.common.log
 import com.friendship41.life_util.common.saveFile
 import com.friendship41.life_util.data.Restaurant
-import com.jayway.jsonpath.JsonPath
 import kotlinx.android.synthetic.main.activity_add_lunch.*
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.lang.Exception
 
@@ -35,7 +37,7 @@ class AddLunchActivity : AppCompatActivity() {
                     this.applicationContext,
                     "temp",
                     restaurantName,
-                    Restaurant.Preference.valueOf(checkedPreference.text.toString()))
+                    Restaurant.Preference.getByKor(checkedPreference.text.toString()))
             } catch (e: DuplicateRestaurantNameException) {
                 log().info("식당명이 중복...")
                 Toast.makeText(this.applicationContext, e.message, Toast.LENGTH_SHORT).show()
@@ -56,13 +58,13 @@ class AddLunchActivity : AppCompatActivity() {
             saveFile(context, "room_$roomName", "{}")
             roomFile = File(context.filesDir, "room_$roomName")
         }
-        val roomMap = JsonPath.parse(roomFile).json<HashMap<String, Restaurant>>()
+        val roomMap = Json.decodeFromString<HashMap<String, Restaurant>>(roomFile.bufferedReader().use { it.readText() })
         if (roomMap.containsKey(restaurantName)) {
             throw DuplicateRestaurantNameException("[$restaurantName] 식당명이 중복됩니다.")
         }
         roomMap[restaurantName] = Restaurant(restaurantName, checkedPreference, 0, null)
-        saveFile(context, "room_$roomName", JsonPath.parse(roomMap).jsonString())
-        log().info(JsonPath.parse(roomMap).jsonString())
+        saveFile(context, "room_$roomName", Json.encodeToString(roomMap))
+        log().info("write to file >> ${Json.encodeToString(roomMap)}")
     }
 }
 

@@ -1,6 +1,9 @@
 package com.friendship41.life_util.common
 
 import android.content.Context
+import com.friendship41.life_util.data.Restaurant
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.io.File
 
 fun saveFile(context: Context, filename: String, jsonContent: String) = context
@@ -17,3 +20,8 @@ fun getRoomFileMap(context: Context): Map<String, File> = getFileNameList(contex
     .filter { it.contains("room") }
     .map { it to File(context.filesDir, it) }
     .toMap()
+
+fun getRestaurantMapFromFile(context: Context, roomName: String): HashMap<String, Restaurant> = Json.decodeFromString(
+    getFile(context.applicationContext, roomName)
+        .bufferedReader()
+        .use { it.readText() })
