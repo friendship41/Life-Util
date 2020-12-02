@@ -30,6 +30,43 @@
                 android:layout_height="0dp"
                 android:layout_weight="9"
                 android:orientation="vertical">
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/today_lunch"
+                    android:textSize="50sp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="5"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20sp"
+                        android:gravity="center"
+                        android:background="@drawable/background_under_line"
+                        android:text="@string/dot_dot_dot"
+                        android:textSize="50sp"
+                        android:textColor="@color/colorPrimary"
+                        android:id="@+id/tv_random_restaurant_name"/>
+                <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@color/btnBlue"
+                        android:text="@string/go_go"
+                        android:textSize="50sp"
+                        android:shadowColor="@color/colorPrimaryDark"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:id="@+id/btn_random_lunch_go"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

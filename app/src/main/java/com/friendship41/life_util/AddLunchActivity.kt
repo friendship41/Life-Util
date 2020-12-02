@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.friendship41.life_util.common.getRoomFileMap
 import com.friendship41.life_util.common.log
 import com.friendship41.life_util.common.saveFile
+import com.friendship41.life_util.data.Restaurant
 import com.jayway.jsonpath.JsonPath
 import kotlinx.android.synthetic.main.activity_add_lunch.*
 import java.io.File
@@ -30,7 +31,11 @@ class AddLunchActivity : AppCompatActivity() {
             log().info("add lunch restaurant name=$restaurantName, checkedPreference=${checkedPreference.text}")
 
             try {
-                saveLunchFile(this.applicationContext, "temp", restaurantName, checkedPreference.text.toString())
+                saveLunchFile(
+                    this.applicationContext,
+                    "temp",
+                    restaurantName,
+                    Restaurant.Preference.valueOf(checkedPreference.text.toString()))
             } catch (e: DuplicateRestaurantNameException) {
                 log().info("식당명이 중복...")
                 Toast.makeText(this.applicationContext, e.message, Toast.LENGTH_SHORT).show()
@@ -45,21 +50,17 @@ class AddLunchActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveLunchFile(context: Context, roomName: String, restaurantName: String, checkedPreference: String) {
+    private fun saveLunchFile(context: Context, roomName: String, restaurantName: String, checkedPreference: Restaurant.Preference) {
         var roomFile = getRoomFileMap(context)["room_$roomName"]
         if (roomFile == null) {
             saveFile(context, "room_$roomName", "{}")
             roomFile = File(context.filesDir, "room_$roomName")
         }
-        val roomMap = JsonPath.parse(roomFile).json<HashMap<String, Any>>()
+        val roomMap = JsonPath.parse(roomFile).json<HashMap<String, Restaurant>>()
         if (roomMap.containsKey(restaurantName)) {
             throw DuplicateRestaurantNameException("[$restaurantName] 식당명이 중복됩니다.")
         }
-        roomMap[restaurantName] = mapOf(
-            Pair("checkedPreference", checkedPreference),
-            Pair("count", 0),
-            Pair("history", HashMap<Any, Any>())
-        )
+        roomMap[restaurantName] = Restaurant(restaurantName, checkedPreference, 0, null)
         saveFile(context, "room_$roomName", JsonPath.parse(roomMap).jsonString())
         log().info(JsonPath.parse(roomMap).jsonString())
     }

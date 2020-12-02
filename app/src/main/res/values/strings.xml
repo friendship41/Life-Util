@@ -4,6 +4,10 @@
     <string name="lunch_list_en">LUNCH LIST</string>
     <string name="add_lunch_en">ADD LUNCH</string>
 
+    <string name="today_lunch">오늘의 점심은?</string>
+    <string name="dot_dot_dot">. . .</string>
+    <string name="go_go">ㄱㄱ!</string>
+
     <string name="lunch">점심</string>
     <string name="cash">결제</string>
     <string name="history">히스토리</string>
