@@ -9,6 +9,12 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".AddPeopleActivity">
+        </activity>
+        <activity android:name=".PeopleListActivity">
+        </activity>
+        <activity android:name=".PayActivity">
+        </activity>
         <activity android:name=".AddLunchActivity">
         </activity>
         <activity android:name=".LunchListActivity">

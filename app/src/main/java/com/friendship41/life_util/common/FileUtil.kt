@@ -1,10 +1,12 @@
 package com.friendship41.life_util.common
 
 import android.content.Context
+import com.friendship41.life_util.data.Person
 import com.friendship41.life_util.data.Restaurant
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.io.FileNotFoundException
 
 fun saveFile(context: Context, filename: String, jsonContent: String) = context
     .openFileOutput(filename, Context.MODE_PRIVATE)
@@ -25,3 +27,8 @@ fun getRestaurantMapFromFile(context: Context, roomName: String): HashMap<String
     getFile(context.applicationContext, roomName)
         .bufferedReader()
         .use { it.readText() })
+
+fun getPeopleListFromFile(context: Context, peopleFileName: String): ArrayList<Person> = (Json.decodeFromString(
+    getFile(context.applicationContext, peopleFileName)
+        .bufferedReader()
+        .use { it.readText() }) as HashMap<String, ArrayList<Person>>)["peopleList"] ?: throw FileNotFoundException()

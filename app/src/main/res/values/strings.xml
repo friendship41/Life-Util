@@ -3,6 +3,7 @@
     <string name="setting_en">SETTING</string>
     <string name="lunch_list_en">LUNCH LIST</string>
     <string name="add_lunch_en">ADD LUNCH</string>
+    <string name="add_people_en">ADD PEOPLE</string>
 
     <string name="today_lunch">오늘의 점심은?</string>
     <string name="dot_dot_dot">. . .</string>
@@ -13,6 +14,10 @@
     <string name="history">히스토리</string>
     <string name="setting">세팅</string>
 
+    <string name="pay_people">결제할 사람 픽</string>
+
+    <string name="group_list">그룹 리스트</string>
+
     <string name="lunch_setting">점심 메뉴 세팅</string>
     <string name="cash_setting">점심 결제 세팅</string>
 
@@ -21,6 +26,8 @@
     <string name="low">낮음</string>
     <string name="middle">중간</string>
     <string name="high">높음</string>
+
+    <string name="name">이름</string>
 
     <string name="plus">+</string>
     <string name="ok_en">OK</string>

@@ -29,3 +29,13 @@ data class Restaurant(
 
     }
 }
+
+@Serializable
+data class PeopleFile(
+    val peopleList: List<Person>
+)
+
+@Serializable
+data class Person(
+    val name: String
+)
